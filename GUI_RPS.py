@@ -12,6 +12,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Ui_MainWindow(object):
+    """
+    class creates a window for GUI
+    """
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setFixedSize(660, 544)
@@ -55,7 +58,7 @@ class Ui_MainWindow(object):
         self.Quit.setObjectName("Quit")
 
         self.choose_hand = QtWidgets.QLabel(self.centralwidget)
-        self.choose_hand.setGeometry(QtCore.QRect(30, 260, 271, 41))
+        self.choose_hand.setGeometry(QtCore.QRect(30, 260, 400, 41))
         self.choose_hand.setObjectName("choose_hand")
 
         self.user_score_disply = QtWidgets.QLabel(self.centralwidget)
@@ -78,6 +81,10 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
+        """
+        method sets texts for buttons on GUI
+        :param MainWindow:
+        """
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Rock - Paper - Scissors"))
         self.Title.setText(_translate("MainWindow", "ROCK - PAPER - SCISSORS"))
