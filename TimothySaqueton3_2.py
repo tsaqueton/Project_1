@@ -1,26 +1,30 @@
 import random
 
+
 def heading():
-    print('-'*22)
+    print('-' * 22)
     print('Rock - Paper - Scissor')
-    print('-'*22)
+    print('-' * 22)
+
 
 def get_hand():
     hand_list = ['rock', 'paper', 'scissor']
     return random.choices(hand_list)
 
+
 def round_winner(user, computer):
     if user == computer:
         print(f'Computer is {computer}. You are {user}. You tie.')
         return 0
-    elif (user == 'rock' and computer == 'scissor') or\
-          (user == 'paper' and computer == 'rock') or\
-          (user == 'scissor' and computer == 'paper'):
+    elif (user == 'rock' and computer == 'scissor') or \
+            (user == 'paper' and computer == 'rock') or \
+            (user == 'scissor' and computer == 'paper'):
         print(f'Computer is {computer}. You are {user}. You win.')
         return 1
     else:
         print(f'Computer is {computer}. You are {user}. You lose.')
         return -1
+
 
 def main():
     random.seed(1)
@@ -40,6 +44,7 @@ def main():
         print('GAME OVER _ IT\'S A TIE')
     else:
         print('GAME OVER - COMPUTER WINS')
+
 
 if __name__ == '__main__':
     main()

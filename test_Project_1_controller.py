@@ -1,37 +1,65 @@
-import pytest
+import unittest
 from Project_1_controller import *
-from GUI_RPS import *
 
 
-class Test:
-    """
-    class for testing methods in Project_1_controller.py
-    """
+class MyTestCase(unittest.TestCase):
 
-    def setup_method(self):
-        """
-        method
-        """
-        self.rps = Controller()
+    def setUp(self):
+        print('setUp')
+        self.hand_list = ['rock', 'paper', 'scissors']
 
-    def teardown_method(self):
-        """
-        method
-        """
-        del self.rps
+    def tearDown(self):
+        print('tearDown')
+        del self.hand_list
 
-    def test_round_winner(self):
-        self.rps.round_winner('rock', 'paper')
-        assert self.rps.user_score == 0
-        assert self.rps.computer_score == 1
+    def test_get_computer_hand(self):
+        random.seed(1)
+        self.assertEqual(get_computer_hand(self.hand_list), ['rock'])
+        self.assertEqual(get_computer_hand(self.hand_list), ['scissors'])
+        self.assertEqual(get_computer_hand(self.hand_list), ['scissors'])
+        self.assertEqual(get_computer_hand(self.hand_list), ['rock'])
+        self.assertEqual(get_computer_hand(self.hand_list), ['paper'])
 
-    """
-    actual = ['rock', 'paper', 'scissors']
-    expected = ['rock', 'paper', 'scissors']
-    
-    assert len(actual) == len(expected)
-    assert all([a == b for a, b in zip(actual, expected)])
-    
-    print(all([a == b for a, b in zip(actual, expected)]))
-    """
+    def test_function_round_winner(self):
+        user = 'rock'
+        computer = 'rock'
+        self.assertEqual(function_round_winner(self.hand_list, user, computer), 'tie')
+        user = 'rock'
+        computer = 'paper'
+        self.assertEqual(function_round_winner(self.hand_list, user, computer), 'computer')
+        user = 'rock'
+        computer = 'scissors'
+        self.assertEqual(function_round_winner(self.hand_list, user, computer), 'user')
+        user = 'paper'
+        computer = 'paper'
+        self.assertEqual(function_round_winner(self.hand_list, user, computer), 'tie')
+        user = 'paper'
+        computer = 'scissors'
+        self.assertEqual(function_round_winner(self.hand_list, user, computer), 'computer')
+        user = 'paper'
+        computer = 'rock'
+        self.assertEqual(function_round_winner(self.hand_list, user, computer), 'user')
+        user = 'scissors'
+        computer = 'scissors'
+        self.assertEqual(function_round_winner(self.hand_list, user, computer), 'tie')
+        user = 'scissors'
+        computer = 'rock'
+        self.assertEqual(function_round_winner(self.hand_list, user, computer), 'computer')
+        user = 'scissors'
+        computer = 'paper'
+        self.assertEqual(function_round_winner(self.hand_list, user, computer), 'user')
 
+    def test_function_game_over(self):
+        user = 2
+        computer = 0
+        self.assertEqual(function_game_over(user, computer), 'user')
+        user = 1
+        computer = 2
+        self.assertEqual(function_game_over(user, computer), 'computer')
+        user = 1
+        computer = 1
+        self.assertEqual(function_game_over(user, computer), 'tie')
+
+
+if __name__ == '__main__':
+    unittest.main()

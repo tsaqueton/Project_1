@@ -3,6 +3,47 @@ from GUI_RPS import Ui_MainWindow
 import random
 
 
+def get_computer_hand(hand_list):
+    """
+    method get_computer_hand uses random to choose from the class attribute list (hand_list) and returns it
+    to method choose_clicked.
+    :return: string ('rock', 'paper', or 'scissors')
+    """
+    return random.choices(hand_list)
+
+
+def function_round_winner(hand_list, user, computer):
+    """
+    function_round_winner determines the winner per rock-paper-scissors round and increments either
+    self.user_score, self.computer_score, or neither depending on the respective hands.
+    :param hand_list: list having hand options
+    :param user: string (user_hand)
+    :param computer:  string (computer_hand)
+    :return: string ('tie', 'user', or 'computer')
+    """
+    if user == computer:
+        return 'tie'
+    elif (user == hand_list[0] and computer == hand_list[2]) or \
+            (user == hand_list[1] and computer == hand_list[0]) or \
+            (user == hand_list[2] and computer == hand_list[1]):
+        return 'user'
+    else:
+        return 'computer'
+
+
+def function_game_over(user_score, computer_score):
+    """
+    function_game_over determines the game winner (whoever has higher points) or if the game is tie (equal points).
+    :return: string ('tie', 'user', or 'computer')
+    """
+    if user_score > computer_score:
+        return 'user'
+    elif user_score == computer_score:
+        return 'tie'
+    else:
+        return 'computer'
+
+
 class Controller(QMainWindow, Ui_MainWindow):
     """
     class Controller controls GUI_RPS.py (GUI for rock-paper-scissors program)
@@ -84,14 +125,6 @@ class Controller(QMainWindow, Ui_MainWindow):
             user_hand = self.radioScissors.text()
         return user_hand
 
-    def get_computer_hand(self):
-        """
-        method get_computer_hand uses random to choose from the class attribute list (hand_list) and returns it
-        to method choose_clicked.
-        :return: string ('rock', 'paper', or 'scissors')
-        """
-        return random.choices(self.hand_list)
-
     def round_winner(self, user, computer):
         """
         method round_winner determines the winner per rock-paper-scissors round and increments either
@@ -99,11 +132,10 @@ class Controller(QMainWindow, Ui_MainWindow):
         :param user: string (user_hand)
         :param computer:  string (computer_hand)
         """
-        if user == computer:
+        winner = function_round_winner(self.hand_list, user, computer)
+        if winner == 'tie':
             self.round_result.setText(f'Computer is {computer}. You are {user}. You tie.')
-        elif (user == self.hand_list[0] and computer == self.hand_list[2]) or \
-                (user == self.hand_list[1] and computer == self.hand_list[0]) or \
-                (user == self.hand_list[2] and computer == self.hand_list[1]):
+        elif winner == 'user':
             self.round_result.setText(f'Computer is {computer}. You are {user}. You win.')
             self.user_score += 1
         else:
@@ -143,7 +175,7 @@ class Controller(QMainWindow, Ui_MainWindow):
         """
         self.round += 1
         user_hand = self.get_user_hand()
-        computer_hand = self.get_computer_hand()
+        computer_hand = get_computer_hand(self.hand_list)
         self.round_winner(user_hand, computer_hand[0])
         self.display_score(self.user_score, self.computer_score)
         self.group.setExclusive(False)
@@ -160,10 +192,11 @@ class Controller(QMainWindow, Ui_MainWindow):
         The self.choose_hand text is changed to 'GAME OVER' and displays the game result. Then it calls method
         self.button_config_1 to show "Play again?" and "Quit" buttons and hides all other buttons.
         """
+        winner = function_game_over(self.user_score, self.computer_score)
         self.button_config_1()
-        if self.user_score > self.computer_score:
+        if winner == 'user':
             self.choose_hand.setText('GAME OVER - YOU WIN')
-        elif self.user_score == self.computer_score:
+        elif winner == 'tie':
             self.choose_hand.setText('GAME OVER _ IT\'S A TIE')
         else:
             self.choose_hand.setText('GAME OVER - COMPUTER WINS')
